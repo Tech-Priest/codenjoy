@@ -9,13 +9,15 @@ import static org.mockito.Mockito.verify
 class GameSpecification extends Specification {
 
     AbstractGameTest game = new AbstractGameTest()
-
-    void check(String field) {
-        assert game.field() == c(field)
-    }
+    boolean given = true
 
     void field(String field) {
-        game.givenFl(c(field).replace("\n", ""))
+        if (given) {
+            game.givenFl(c(field).replace("\n", ""))
+            given = false
+        } else {
+            assert game.field() == c(field)
+        }
     }
 
     static String c(String field) {
@@ -44,7 +46,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -68,7 +70,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☺  ☼
@@ -92,7 +94,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
@@ -116,7 +118,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼ ☺ ☼
             ☼   ☼
@@ -140,7 +142,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼   ☼
@@ -162,7 +164,7 @@ class GameSpecification extends Specification {
         game.hero.left()
         game++
 
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -174,7 +176,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -198,7 +200,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☼☺ ☼
@@ -222,7 +224,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺☼☼
@@ -246,7 +248,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼ ☼ ☼
             ☼ ☺ ☼
@@ -270,7 +272,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -294,7 +296,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -307,7 +309,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -332,7 +334,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -357,7 +359,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -384,7 +386,7 @@ class GameSpecification extends Specification {
 
         then:
         verify(game.listener).event(Events.LOOSE)
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ X ☼
@@ -414,7 +416,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check '''
+        field '''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -442,7 +444,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -456,7 +458,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ X ☼
@@ -469,7 +471,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☺  ☼
@@ -495,7 +497,7 @@ class GameSpecification extends Specification {
 
         then:
         verify(game.listener).event(Events.WIN)
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼$  ☼
             ☼  ☺☼
@@ -521,7 +523,7 @@ class GameSpecification extends Specification {
 
         then:
         verify(game.listener).event(Events.WIN)
-        check'''
+        field'''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
