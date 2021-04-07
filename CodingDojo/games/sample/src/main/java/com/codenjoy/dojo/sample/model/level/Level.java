@@ -24,6 +24,7 @@ package com.codenjoy.dojo.sample.model.level;
 
 
 import com.codenjoy.dojo.sample.model.Hero;
+import com.codenjoy.dojo.sample.model.items.Bomb;
 import com.codenjoy.dojo.sample.model.items.Gold;
 import com.codenjoy.dojo.sample.model.items.Wall;
 
@@ -44,4 +45,6 @@ public interface Level {
     List<Hero> heroes();
 
     List<Gold> gold();
+
+    List<Bomb> bombs();
 }

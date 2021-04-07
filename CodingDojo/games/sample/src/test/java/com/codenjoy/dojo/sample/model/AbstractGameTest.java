@@ -83,6 +83,10 @@ public class AbstractGameTest {
         return (String) printer.getPrinter(game.reader(), player).print();
     }
 
+    public void newGame() {
+        game.newGame(player);
+    }
+
     // for Groovy & Spock
 
     public static String c(String board) {

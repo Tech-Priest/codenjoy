@@ -216,7 +216,11 @@ public class GameTest extends AbstractGameTest {
     // на бомбе я взрываюсь
     @Test
     public void shouldDieOnBomb() {
-        shouldMakeBomb();
+        givenFl("☼☼☼☼☼" +
+                "☼   ☼" +
+                "☼ x ☼" +
+                "☼ ☺ ☼" +
+                "☼☼☼☼☼");
 
         assertTrue(hero.isAlive());
 

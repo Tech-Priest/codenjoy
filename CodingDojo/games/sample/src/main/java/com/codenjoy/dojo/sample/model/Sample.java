@@ -56,7 +56,7 @@ public class Sample implements Field {
 
     private List<Player> players;
 
-    private final int size;
+    private int size;
     private Dice dice;
 
     private GameSettings settings;
@@ -65,10 +65,10 @@ public class Sample implements Field {
         this.dice = dice;
         walls = level.walls();
         gold = level.gold();
+        bombs = level.bombs();
         size = level.size();
         this.settings = settings;
         players = new LinkedList<>();
-        bombs = new LinkedList<>();
     }
 
     /**

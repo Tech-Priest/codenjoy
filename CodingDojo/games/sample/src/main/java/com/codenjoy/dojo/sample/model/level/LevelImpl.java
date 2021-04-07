@@ -24,16 +24,15 @@ package com.codenjoy.dojo.sample.model.level;
 
 
 import com.codenjoy.dojo.sample.model.Hero;
+import com.codenjoy.dojo.sample.model.items.Bomb;
 import com.codenjoy.dojo.sample.model.items.Gold;
 import com.codenjoy.dojo.sample.model.items.Wall;
 import com.codenjoy.dojo.services.LengthToXY;
+
+import static com.codenjoy.dojo.sample.model.Elements.*;
 import static com.codenjoy.dojo.utils.LevelUtils.*;
 
 import java.util.List;
-
-import static com.codenjoy.dojo.sample.model.Elements.GOLD;
-import static com.codenjoy.dojo.sample.model.Elements.HERO;
-import static com.codenjoy.dojo.sample.model.Elements.WALL;
 
 /**
  * Полезный утилитный класс для получения объектов на поле из текстового вида.
@@ -62,6 +61,11 @@ public class LevelImpl implements Level {
     @Override
     public List<Gold> gold() {
         return getObjects(xy, map, Gold::new, GOLD);
+    }
+
+    @Override
+    public List<Bomb> bombs() {
+        return getObjects(xy, map, Bomb::new, BOMB);
     }
 
     @Override
