@@ -24,17 +24,17 @@ package com.codenjoy.dojo.sample.model;
 
 
 import com.codenjoy.dojo.sample.model.level.Level;
+import com.codenjoy.dojo.sample.services.Events;
 import com.codenjoy.dojo.sample.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.OngoingStubbing;
 
 import static com.codenjoy.dojo.sample.services.GameSettings.Keys.LEVEL_MAP;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -57,6 +57,10 @@ public class AbstractGameTest {
 
     public void tick() {
         game.tick();
+    }
+
+    public void event(Events event) {
+        verify(listener).event(event);
     }
 
     public void givenFl(String board) {

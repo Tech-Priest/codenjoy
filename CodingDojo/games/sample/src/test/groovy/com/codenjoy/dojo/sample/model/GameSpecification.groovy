@@ -395,7 +395,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        verify(game.listener).event(Events.LOOSE)
+        game.event(Events.LOOSE)
         field'''
             ☼☼☼☼☼
             ☼   ☼
@@ -506,7 +506,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        verify(game.listener).event(Events.WIN)
+        game.event(Events.WIN)
         field'''
             ☼☼☼☼☼
             ☼$  ☼
@@ -532,7 +532,7 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        verify(game.listener).event(Events.WIN)
+        game.event(Events.WIN)
         field'''
             ☼☼☼☼☼
             ☼   ☼
