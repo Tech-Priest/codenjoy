@@ -30,6 +30,15 @@ class GameSpecification extends Specification {
             delegate.tick()
             return delegate
         }
+        AbstractGameTest.metaClass.hero = { ch ->
+            switch (ch) {
+                case '>' : delegate.hero.right(); break
+                case '<' : delegate.hero.left(); break
+                case '˄' : delegate.hero.up(); break
+                case '˅' : delegate.hero.down(); break
+            }
+            return delegate
+        }
     }
 
     def "hero on the field"() {
@@ -66,7 +75,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.left()
+        game.hero '<'
         game++
 
         then:
@@ -90,7 +99,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.right()
+        game.hero '>'
         game++
 
         then:
@@ -114,7 +123,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.up()
+        game.hero '˄'
         game++
 
         then:
@@ -138,7 +147,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.down()
+        game.hero '˅'
         game++
 
         then:
@@ -161,7 +170,7 @@ class GameSpecification extends Specification {
             ☼☼☼☼☼
             '''
 
-        game.hero.left()
+        game.hero '<'
         game++
 
         field'''
@@ -196,7 +205,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.left()
+        game.hero '<'
         game++
 
         then:
@@ -220,7 +229,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.right()
+        game.hero '>'
         game++
 
         then:
@@ -244,7 +253,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.up()
+        game.hero '˄'
         game++
 
         then:
@@ -268,7 +277,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.down()
+        game.hero '˅'
         game++
 
         then:
@@ -305,7 +314,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.down()
+        game.hero '˅'
         game++
 
         then:
@@ -330,7 +339,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.act()
-        game.hero.down()
+        game.hero '˅'
         game++
 
         then:
@@ -354,7 +363,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.down() // different order than in the previous test
+        game.hero '˅' // different order than in the previous test
         game.hero.act()
         game++
 
@@ -381,7 +390,7 @@ class GameSpecification extends Specification {
         assert game.hero.alive == true
 
         when:
-        game.hero.up()
+        game.hero '˄'
         game++
 
         then:
@@ -407,11 +416,11 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.down()
+        game.hero '˅'
         game.hero.act()
         game++
 
-        game.hero.right()
+        game.hero '>'
         game.hero.act()
         game++
 
@@ -440,7 +449,7 @@ class GameSpecification extends Specification {
         game++
 
         game.hero.act()
-        game.hero.down()
+        game.hero '˅'
         game++
 
         then:
@@ -454,7 +463,7 @@ class GameSpecification extends Specification {
 
         when:
         game.dice(1, 2)
-        game.hero.up()
+        game.hero '˄'
         game++
 
         then:
@@ -492,7 +501,7 @@ class GameSpecification extends Specification {
 
         when:
         game.dice(1, 3)
-        game.hero.right()
+        game.hero '>'
         game++
 
         then:
@@ -518,7 +527,7 @@ class GameSpecification extends Specification {
 
         when:
         game.dice(0, 0)  // there is no space in this cell because of board
-        game.hero.right()
+        game.hero '>'
         game++
 
         then:
