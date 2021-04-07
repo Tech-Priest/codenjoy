@@ -97,4 +97,8 @@ public class AbstractGameTest {
     public void leftShift(String board) {
         givenFl(c(board).replace("\n", ""));
     }
+
+    void check(String board) {
+        assert field() == c(board);
+    }
 }

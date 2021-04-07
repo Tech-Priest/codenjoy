@@ -10,6 +10,10 @@ class GameSpecification extends Specification {
 
     AbstractGameTest game = new AbstractGameTest()
 
+    void check(String board) {
+        assert game.field() == c(board)
+    }
+
     def "hero on the field"() {
         given:
         game << '''
@@ -24,7 +28,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -48,7 +52,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼☺  ☼
@@ -72,7 +76,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
@@ -96,7 +100,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼ ☺ ☼
             ☼   ☼
@@ -120,7 +124,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼   ☼
@@ -142,7 +146,7 @@ class GameSpecification extends Specification {
         game.hero.left();
         game.tick();
 
-        assert game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -154,7 +158,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -178,7 +182,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼☼☺ ☼
@@ -202,7 +206,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺☼☼
@@ -226,7 +230,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼ ☼ ☼
             ☼ ☺ ☼
@@ -250,7 +254,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -274,7 +278,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -287,7 +291,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -312,7 +316,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -321,7 +325,7 @@ class GameSpecification extends Specification {
             ''')
     }
 
-    def "there is no difference in what order the movement and the act command are executed" () {
+    def "there is no difference in what order the movement and the act command are executed"() {
         given:
         game << '''
             ☼☼☼☼☼
@@ -337,7 +341,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -364,7 +368,7 @@ class GameSpecification extends Specification {
 
         then:
         verify(game.listener).event(Events.LOOSE);
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ X ☼
@@ -394,7 +398,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -422,7 +426,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -436,7 +440,7 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼ X ☼
@@ -449,7 +453,7 @@ class GameSpecification extends Specification {
         game.tick();
 
         then:
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼☺  ☼
@@ -475,7 +479,7 @@ class GameSpecification extends Specification {
 
         then:
         verify(game.listener).event(Events.WIN);
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼$  ☼
             ☼  ☺☼
@@ -484,7 +488,7 @@ class GameSpecification extends Specification {
             ''')
     }
 
-    def "if there is no place for gold, then the program does not freeze" () {
+    def "if there is no place for gold, then the program does not freeze"() {
         given:
         game << '''
             ☼☼☼☼☼
@@ -501,7 +505,7 @@ class GameSpecification extends Specification {
 
         then:
         verify(game.listener).event(Events.WIN);
-        game.field() == c('''
+        check('''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
