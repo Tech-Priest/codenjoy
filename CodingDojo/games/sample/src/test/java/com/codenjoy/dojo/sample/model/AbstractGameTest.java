@@ -95,6 +95,6 @@ public class AbstractGameTest {
     }
 
     public void leftShift(String board) {
-        givenFl(board.replace("\n", ""));
+        givenFl(c(board).replace("\n", ""));
     }
 }
