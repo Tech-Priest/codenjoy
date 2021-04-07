@@ -36,6 +36,7 @@ class GameSpecification extends Specification {
                 case '<' : delegate.hero.left(); break
                 case '˄' : delegate.hero.up(); break
                 case '˅' : delegate.hero.down(); break
+                case '*' : delegate.hero.act(); break
             }
             return delegate
         }
@@ -301,7 +302,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.act()
+        game.hero '*'
         game++
 
         then:
@@ -338,7 +339,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.act()
+        game.hero '*'
         game.hero '˅'
         game++
 
@@ -364,7 +365,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero '˅' // different order than in the previous test
-        game.hero.act()
+        game.hero '*'
         game++
 
         then:
@@ -417,11 +418,11 @@ class GameSpecification extends Specification {
 
         when:
         game.hero '˅'
-        game.hero.act()
+        game.hero '*'
         game++
 
         game.hero '>'
-        game.hero.act()
+        game.hero '*'
         game++
 
         then:
@@ -445,10 +446,10 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.hero.act()
+        game.hero '*'
         game++
 
-        game.hero.act()
+        game.hero '*'
         game.hero '˅'
         game++
 
