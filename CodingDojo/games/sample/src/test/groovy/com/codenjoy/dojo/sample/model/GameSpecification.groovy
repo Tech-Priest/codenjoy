@@ -1,10 +1,8 @@
 package com.codenjoy.dojo.sample.model
 
-import com.codenjoy.dojo.sample.services.Events
+import static com.codenjoy.dojo.sample.services.Events.*
 import org.apache.commons.lang3.StringUtils
 import spock.lang.Specification
-
-import static org.mockito.Mockito.verify
 
 class GameSpecification extends Specification {
 
@@ -395,7 +393,6 @@ class GameSpecification extends Specification {
         game++
 
         then:
-        game.event(Events.LOOSE)
         field'''
             ☼☼☼☼☼
             ☼   ☼
@@ -403,6 +400,7 @@ class GameSpecification extends Specification {
             ☼   ☼
             ☼☼☼☼☼
             '''
+        game.event LOOSE
         game.hero.alive == false
     }
 
@@ -463,7 +461,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.dice(1, 2)
+        game.dice 1, 2
         game.hero '˄'
         game++
 
@@ -501,12 +499,11 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.dice(1, 3)
+        game.dice 1, 3
         game.hero '>'
         game++
 
         then:
-        game.event(Events.WIN)
         field'''
             ☼☼☼☼☼
             ☼$  ☼
@@ -514,6 +511,7 @@ class GameSpecification extends Specification {
             ☼   ☼
             ☼☼☼☼☼
             '''
+        game.event WIN
     }
 
     def "if there is no place for gold, then the program does not freeze"() {
@@ -527,12 +525,11 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.dice(0, 0)  // there is no space in this cell because of board
+        game.dice 0, 0  // there is no space in this cell because of board
         game.hero '>'
         game++
 
         then:
-        game.event(Events.WIN)
         field'''
             ☼☼☼☼☼
             ☼   ☼
@@ -540,5 +537,6 @@ class GameSpecification extends Specification {
             ☼   ☼
             ☼☼☼☼☼
             '''
+        game.event WIN
     }
 }
