@@ -1,10 +1,10 @@
 package com.codenjoy.dojo.sample.model
 
 import com.codenjoy.dojo.sample.services.Events
+import org.apache.commons.lang3.StringUtils
 import spock.lang.Specification
 
-import static com.codenjoy.dojo.sample.model.AbstractGameTest.c
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verify
 
 class GameSpecification extends Specification {
 
@@ -14,9 +14,18 @@ class GameSpecification extends Specification {
         assert game.field() == c(board)
     }
 
+    void board(String board) {
+        game.givenFl(c(board).replace("\n", ""))
+    }
+
+    static String c(String board) {
+        int len = board.length() - StringUtils.stripStart(board, null).length()
+        return board.replaceAll("\n" + (" ".repeat(len - 1)), "\n").replaceFirst("\n", "")
+    }
+
     def "hero on the field"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -28,18 +37,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can walk to the left"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -52,18 +61,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☺  ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can walk to the right"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -76,18 +85,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can walk to the up"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -100,18 +109,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼ ☺ ☼
             ☼   ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can walk to the down"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -124,18 +133,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼   ☼
             ☼ ☺ ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "if the hero does not receive commands, he does not go anywhere"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
@@ -143,33 +152,33 @@ class GameSpecification extends Specification {
             ☼☼☼☼☼
             '''
 
-        game.hero.left();
-        game.tick();
+        game.hero.left()
+        game.tick()
 
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
 
         when:
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero cannot go through the border to the left"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☼☺ ☼
@@ -182,18 +191,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☼☺ ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero cannot go through the border to the right"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺☼☼
@@ -206,18 +215,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺☼☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero cannot go through the border to the up"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼ ☼ ☼
             ☼ ☺ ☼
@@ -230,18 +239,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼ ☼ ☼
             ☼ ☺ ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero cannot go through the border to the down"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -254,18 +263,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
             ☼ ☼ ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can leave the bomb under him"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -278,31 +287,31 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
 
         when:
         game.hero.down()
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
             ☼ ☺ ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can leave the bomb under him and at the same moment move to the side"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -316,18 +325,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
             ☼ ☺ ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "there is no difference in what order the movement and the act command are executed"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -341,18 +350,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
             ☼ ☺ ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero will blow up on a bomb if he walks on it"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
@@ -367,20 +376,20 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        verify(game.listener).event(Events.LOOSE);
-        check('''
+        verify(game.listener).event(Events.LOOSE)
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ X ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
         game.hero.alive == false
     }
 
     def "hero on the field can leave as many bombs as he wants"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -398,18 +407,18 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check '''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
             ☼ x☺☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero cannot leave two bombs in one cell"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺ ☼
@@ -426,13 +435,13 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ x ☼
             ☼ ☺ ☼
             ☼☼☼☼☼
-            ''')
+            '''
 
         when:
         game.dice(1, 2)
@@ -440,31 +449,31 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ X ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
 
         when:
         game.newGame()
-        game.tick();
+        game.tick()
 
         then:
-        check('''
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼☺  ☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "hero can pick up gold on the map, after which it will appear in a new place"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺$☼
@@ -478,19 +487,19 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        verify(game.listener).event(Events.WIN);
-        check('''
+        verify(game.listener).event(Events.WIN)
+        check'''
             ☼☼☼☼☼
             ☼$  ☼
             ☼  ☺☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 
     def "if there is no place for gold, then the program does not freeze"() {
         given:
-        game << '''
+        board'''
             ☼☼☼☼☼
             ☼   ☼
             ☼ ☺$☼
@@ -504,13 +513,13 @@ class GameSpecification extends Specification {
         game.tick()
 
         then:
-        verify(game.listener).event(Events.WIN);
-        check('''
+        verify(game.listener).event(Events.WIN)
+        check'''
             ☼☼☼☼☼
             ☼   ☼
             ☼  ☺☼
             ☼   ☼
             ☼☼☼☼☼
-            ''')
+            '''
     }
 }

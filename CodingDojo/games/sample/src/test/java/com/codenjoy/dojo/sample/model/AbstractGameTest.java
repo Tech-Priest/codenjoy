@@ -87,18 +87,4 @@ public class AbstractGameTest {
         game.newGame(player);
     }
 
-    // for Groovy & Spock
-
-    public static String c(String board) {
-        int len = board.length() - StringUtils.stripStart(board, null).length();
-        return board.replaceAll("\n" + (" ".repeat(len - 1)), "\n").replaceFirst("\n", "");
-    }
-
-    public void leftShift(String board) {
-        givenFl(c(board).replace("\n", ""));
-    }
-
-    void check(String board) {
-        assert field() == c(board);
-    }
 }
