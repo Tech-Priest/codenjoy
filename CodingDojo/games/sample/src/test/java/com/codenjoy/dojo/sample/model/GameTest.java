@@ -23,24 +23,11 @@ package com.codenjoy.dojo.sample.model;
  */
 
 
-import com.codenjoy.dojo.sample.model.level.Level;
-import com.codenjoy.dojo.sample.services.GameSettings;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.utils.TestUtils;
 import com.codenjoy.dojo.sample.services.Events;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
-import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 
 public class GameTest extends AbstractGameTest {
 

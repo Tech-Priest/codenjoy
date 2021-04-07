@@ -24,15 +24,12 @@ package com.codenjoy.dojo.sample.model;
 
 
 import com.codenjoy.dojo.sample.model.level.Level;
-import com.codenjoy.dojo.sample.services.Events;
 import com.codenjoy.dojo.sample.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;
 
 import static com.codenjoy.dojo.sample.services.GameSettings.Keys.LEVEL_MAP;
@@ -40,28 +37,25 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-public abstract class AbstractGameTest {
+public class AbstractGameTest {
 
     protected Sample game;
     protected Hero hero;
-    private Dice dice;
+    private Dice dice = mock(Dice.class);
     protected EventListener listener;
     protected Player player;
-    private PrinterFactory printer;
-    private GameSettings settings;
-
-    @Before
-    public void setup() {
-        dice = mock(Dice.class);
-        settings = new GameSettings();
-        printer = new PrinterFactoryImpl();
-    }
+    private PrinterFactory printer = new PrinterFactoryImpl();
+    private GameSettings settings = new GameSettings();
 
     public void dice(int...ints) {
         OngoingStubbing<Integer> when = when(dice.next(anyInt()));
         for (int i : ints) {
             when = when.thenReturn(i);
         }
+    }
+
+    public void tick() {
+        game.tick();
     }
 
     public void givenFl(String board) {
@@ -81,7 +75,17 @@ public abstract class AbstractGameTest {
     }
 
     public void assertE(String expected) {
-        assertEquals(TestUtils.injectN(expected),
-                printer.getPrinter(game.reader(), player).print());
+        assertEquals(TestUtils.injectN(expected), board());
     }
+
+    public String board() {
+        return (String) printer.getPrinter(game.reader(), player).print();
+    }
+
+    // for Groovy & Spock
+
+    public void leftShift(String board) {
+        givenFl(board.replace("\n", ""));
+    }
+
 }

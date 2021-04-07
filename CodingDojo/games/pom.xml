@@ -26,6 +26,7 @@
         <fest-assert.version>1.4</fest-assert.version>
         <junit.version>4.13.1</junit.version>
         <mockito.version>3.7.7</mockito.version>
+        <spock.version>2.0-M5-groovy-3.0</spock.version>
 
         <!-- Maven -->
         <maven-compiler.version>3.8.1</maven-compiler.version>
@@ -211,6 +212,12 @@
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-all</artifactId>
                 <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${spock.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
