@@ -1,7 +1,9 @@
 package com.codenjoy.dojo.sample.model
 
 
-import spock.lang.Specification;
+import spock.lang.Specification
+
+import static com.codenjoy.dojo.sample.model.AbstractGameTest.c;
 
 class GameSpecification extends Specification {
 
@@ -10,21 +12,24 @@ class GameSpecification extends Specification {
     def "hero on the field"() {
         given:
         game <<
-'''☼☼☼☼☼
-☼   ☼
-☼ ☺ ☼
-☼   ☼
-☼☼☼☼☼'''
+            c('''
+            ☼☼☼☼☼
+            ☼   ☼
+            ☼ ☺ ☼
+            ☼   ☼
+            ☼☼☼☼☼
+            ''')
         when:
         game.tick()
 
         then:
-        game.board() ==
-'''☼☼☼☼☼
-☼   ☼
-☼ ☺ ☼
-☼   ☼
-☼☼☼☼☼
-'''
+        game.field() ==
+            c('''
+            ☼☼☼☼☼
+            ☼   ☼
+            ☼ ☺ ☼
+            ☼   ☼
+            ☼☼☼☼☼
+            ''')
     }
 }

@@ -30,6 +30,7 @@ import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.OngoingStubbing;
 
 import static com.codenjoy.dojo.sample.services.GameSettings.Keys.LEVEL_MAP;
@@ -75,17 +76,21 @@ public class AbstractGameTest {
     }
 
     public void assertE(String expected) {
-        assertEquals(TestUtils.injectN(expected), board());
+        assertEquals(TestUtils.injectN(expected), field());
     }
 
-    public String board() {
+    public String field() {
         return (String) printer.getPrinter(game.reader(), player).print();
     }
 
     // for Groovy & Spock
 
+    public static String c(String board) {
+        int len = board.length() - StringUtils.stripStart(board, null).length();
+        return board.replaceAll("\n" + (" ".repeat(len - 1)), "\n").replaceFirst("\n", "");
+    }
+
     public void leftShift(String board) {
         givenFl(board.replace("\n", ""));
     }
-
 }
