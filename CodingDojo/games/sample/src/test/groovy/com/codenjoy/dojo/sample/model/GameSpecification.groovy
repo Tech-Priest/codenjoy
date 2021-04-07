@@ -23,6 +23,13 @@ class GameSpecification extends Specification {
         return field.replaceAll("\n" + (" ".repeat(len - 1)), "\n").replaceFirst("\n", "")
     }
 
+    static {
+        AbstractGameTest.metaClass.next = { ->
+            delegate.tick()
+            return delegate
+        }
+    }
+
     def "hero on the field"() {
         given:
         field'''
@@ -34,7 +41,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.tick()
+        game++
 
         then:
         check'''
@@ -58,7 +65,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.left()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -82,7 +89,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.right()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -106,7 +113,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.up()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -130,7 +137,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.down()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -153,7 +160,7 @@ class GameSpecification extends Specification {
             '''
 
         game.hero.left()
-        game.tick()
+        game++
 
         check'''
             ☼☼☼☼☼
@@ -164,7 +171,7 @@ class GameSpecification extends Specification {
             '''
 
         when:
-        game.tick()
+        game++
 
         then:
         check'''
@@ -188,7 +195,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.left()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -212,7 +219,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.right()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -236,7 +243,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.up()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -260,7 +267,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.down()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -284,7 +291,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.act()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -297,7 +304,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.down()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -322,7 +329,7 @@ class GameSpecification extends Specification {
         when:
         game.hero.act()
         game.hero.down()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -347,7 +354,7 @@ class GameSpecification extends Specification {
         when:
         game.hero.down() // different order than in the previous test
         game.hero.act()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -373,7 +380,7 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.up()
-        game.tick()
+        game++
 
         then:
         verify(game.listener).event(Events.LOOSE)
@@ -400,11 +407,11 @@ class GameSpecification extends Specification {
         when:
         game.hero.down()
         game.hero.act()
-        game.tick()
+        game++
 
         game.hero.right()
         game.hero.act()
-        game.tick()
+        game++
 
         then:
         check '''
@@ -428,11 +435,11 @@ class GameSpecification extends Specification {
 
         when:
         game.hero.act()
-        game.tick()
+        game++
 
         game.hero.act()
         game.hero.down()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -446,7 +453,7 @@ class GameSpecification extends Specification {
         when:
         game.dice(1, 2)
         game.hero.up()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -459,7 +466,7 @@ class GameSpecification extends Specification {
 
         when:
         game.newGame()
-        game.tick()
+        game++
 
         then:
         check'''
@@ -484,7 +491,7 @@ class GameSpecification extends Specification {
         when:
         game.dice(1, 3)
         game.hero.right()
-        game.tick()
+        game++
 
         then:
         verify(game.listener).event(Events.WIN)
@@ -510,7 +517,7 @@ class GameSpecification extends Specification {
         when:
         game.dice(0, 0)  // there is no space in this cell because of board
         game.hero.right()
-        game.tick()
+        game++
 
         then:
         verify(game.listener).event(Events.WIN)
