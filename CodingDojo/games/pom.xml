@@ -26,17 +26,14 @@
         <fest-assert.version>1.4</fest-assert.version>
         <junit.version>4.13.1</junit.version>
         <mockito.version>3.7.7</mockito.version>
-        <spock.version>2.0-M5-groovy-3.0</spock.version>
 
         <!-- Maven -->
         <maven-compiler.version>3.8.1</maven-compiler.version>
-        <maven-gmavenplus.version>1.12.1</maven-gmavenplus.version>
         <maven-clean.version>3.0.0</maven-clean.version>
         <maven-resources.version>3.2.0</maven-resources.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <maven-license.version>2.0.0</maven-license.version>
         <maven-source.version>3.2.0</maven-source.version>
-        <maven-surefire.version>2.12.4</maven-surefire.version>
         <maven-jar.version>3.2.0</maven-jar.version>
         <maven-buildnumber.version>1.4</maven-buildnumber.version>
         <maven-scm-jgit.version>1.11.2</maven-scm-jgit.version>
@@ -217,12 +214,6 @@
                 <version>${hamcrest.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.spockframework</groupId>
-                <artifactId>spock-core</artifactId>
-                <version>${spock.version}</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -297,19 +288,6 @@
                         </dependency>
                     </dependencies>
                 </plugin>
-                <!--plugin>
-                    <groupId>org.codehaus.gmavenplus</groupId>
-                    <artifactId>gmavenplus-plugin</artifactId>
-                    <version>${maven-gmavenplus.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>addTestSources</goal>
-                                <goal>compileTests</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -360,17 +338,6 @@
                         </filesets>
                     </configuration>
                 </plugin>
-                <!--plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire.version}</version>
-                    <configuration>
-                        <includes>
-                            <include>**/*Test.class</include>
-                            <include>**/*Spec.class</include>
-                        </includes>
-                    </configuration>
-                </plugin-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
