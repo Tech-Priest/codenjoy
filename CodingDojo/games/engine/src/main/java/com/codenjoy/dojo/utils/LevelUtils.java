@@ -38,6 +38,10 @@ import static java.util.stream.Collectors.toList;
 @UtilityClass
 public class LevelUtils {
 
+    public static String clear(String map) {
+        return map.replaceAll("[\n\r]", "");
+    }
+
     public <T, E extends CharElements> List<T> getObjects(LengthToXY xy, String map,
                                                            BiFunction<Point, E, T> objects,
                                                            E... elements)

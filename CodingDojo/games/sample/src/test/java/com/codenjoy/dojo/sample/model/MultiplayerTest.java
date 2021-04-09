@@ -27,9 +27,8 @@ import com.codenjoy.dojo.sample.services.Events;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
 
-public class MultiplayerTest extends AbstractMultiplayerTest {
+public class MultiplayerTest extends GameTestRunner {
 
     public void givenThreePlayers() {
         givenPlayer(1, 4);
@@ -41,49 +40,48 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
     @Test
     public void shouldPrint() {
         // given
-        givenFl("☼☼☼☼☼☼" +
-                "☼   $☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼   $☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
 
         givenThreePlayers();
 
         // when then
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼☺ ☻$☼\n" +
                 "☼    ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
 
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼☻ ☻$☼\n" +
                 "☼    ☼\n" +
                 "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(1));
+                "☼☼☼☼☼☼\n", 1);
 
-        assertF(
-                "☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼☻ ☺$☼\n" +
                 "☼    ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(2));
+                "☼☼☼☼☼☼\n", 2);
     }
 
     // Каждый игрок может упраыляться за тик игры независимо
     @Test
     public void shouldJoystick() {
         // given
-        givenFl("☼☼☼☼☼☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
 
         givenThreePlayers();
 
@@ -96,24 +94,24 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼x   ☼\n" +
                 "☼☺ ☻ ☼\n" +
                 "☼  ☻ ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
     }
 
     // игроков можно удалять из игры
     @Test
     public void shouldRemove() {
         // given
-        givenFl("☼☼☼☼☼☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
 
         givenThreePlayers();
 
@@ -123,24 +121,24 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼☺   ☼\n" +
                 "☼    ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
     }
 
     // игрок может взорваться на бомбе
     @Test
     public void shouldKill() {
         // given
-        givenFl("☼☼☼☼☼☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
 
         givenThreePlayers();
 
@@ -150,26 +148,26 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
 
         tick();
 
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼x☻  ☼\n" +
                 "☼☺   ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
         
         // when
         game(2).getJoystick().left();
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼X   ☼\n" +
                 "☼☺   ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
 
-        verify(listener(2)).event(Events.LOOSE);
+        event(2, Events.LOOSE);
         assertTrue(game(2).isGameOver());
 
         dice(4, 1);
@@ -177,24 +175,24 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
 
         tick();
 
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼    ☼\n" +
                 "☼☺   ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼   ☻☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
     }
 
     // игрок может подобрать золото
     @Test
     public void shouldGetGold() {
         // given
-        givenFl("☼☼☼☼☼☼" +
-                "☼   $☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼   $☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
 
         givenThreePlayers();
 
@@ -206,26 +204,26 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼☺  ☻☼\n" +
                 "☼    ☼\n" +
                 "☼$☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
 
-        verify(listener(2)).event(Events.WIN);
+        event(2, Events.WIN);
     }
 
     // игрок не может пойи на другого игрока
     @Test
     public void shouldCantGoOnHero() {
         // given
-        givenFl("☼☼☼☼☼☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼    ☼" +
-                "☼☼☼☼☼☼");
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
 
         givenThreePlayers();
 
@@ -236,11 +234,11 @@ public class MultiplayerTest extends AbstractMultiplayerTest {
         tick();
 
         // then
-        assertF("☼☼☼☼☼☼\n" +
+        assertE("☼☼☼☼☼☼\n" +
                 "☼ ☺☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", game(0));
+                "☼☼☼☼☼☼\n", 0);
     }
 }

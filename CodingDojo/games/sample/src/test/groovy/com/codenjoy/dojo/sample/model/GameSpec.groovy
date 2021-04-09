@@ -4,17 +4,17 @@ import static com.codenjoy.dojo.sample.services.Events.*
 import org.apache.commons.lang3.StringUtils
 import spock.lang.Specification
 
-class GameSpecification extends Specification {
+class GameSpec extends Specification {
 
-    AbstractGameTest game = new AbstractGameTest()
+    GameTestRunner game = new GameTestRunner()
     boolean given = true
 
-    void field(String field) {
+    void field(String field, int index = 0) {
         if (given) {
-            game.givenFl(c(field).replace("\n", ""))
+            game.givenFl(c(field))
             given = false
         } else {
-            assert game.field() == c(field)
+            assert game.field(index) == c(field)
         }
     }
 
@@ -24,17 +24,42 @@ class GameSpecification extends Specification {
     }
 
     static {
-        AbstractGameTest.metaClass.next = { ->
+        GameTestRunner.metaClass.next = { ->
             delegate.tick()
             return delegate
         }
-        AbstractGameTest.metaClass.hero = { ch ->
+        GameTestRunner.metaClass.getHero = { index = 0 ->
+            return delegate.hero(index)
+        }
+        GameTestRunner.metaClass.hero = { index = 0, ch ->
             switch (ch) {
-                case '>' : delegate.hero.right(); break
-                case '<' : delegate.hero.left(); break
-                case '˄' : delegate.hero.up(); break
-                case '˅' : delegate.hero.down(); break
-                case '*' : delegate.hero.act(); break
+                case '>' : delegate.hero(index).right();
+/*-
+ * #%L
+ * Codenjoy - it's a dojo-like platform from developers to developers.
+ * %%
+ * Copyright (C) 2018 - 2021 Codenjoy
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+ break
+                case '<' : delegate.hero(index).left(); break
+                case '˄' : delegate.hero(index).up(); break
+                case '˅' : delegate.hero(index).down(); break
+                case '*' : delegate.hero(index).act(); break
             }
             return delegate
         }

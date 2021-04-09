@@ -39,12 +39,11 @@ import java.util.List;
  */
 public class LevelImpl implements Level {
 
-    private final LengthToXY xy;
-
+    private LengthToXY xy;
     private String map;
 
     public LevelImpl(String map) {
-        this.map = map;
+        this.map = clear(map);
         xy = new LengthToXY(size());
     }
 
