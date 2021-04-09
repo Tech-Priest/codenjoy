@@ -85,10 +85,7 @@ public class Sample implements Field {
                 gold.remove(hero);
                 player.event(Events.WIN);
 
-                Optional<Point> pos = freeRandom();
-                if (pos.isPresent()) {
-                    gold.add(new Gold(pos.get()));
-                }
+                freeRandom().ifPresent(this::setGold);
             }
         }
 
@@ -99,6 +96,10 @@ public class Sample implements Field {
                 player.event(Events.LOOSE);
             }
         }
+    }
+
+    public boolean setGold(Point pt) {
+        return gold.add(new Gold(pt));
     }
 
     public int size() {
@@ -115,7 +116,7 @@ public class Sample implements Field {
                 || y < 0
                 || y > size - 1
                 || walls.contains(pt)
-                || getHeroes().contains(pt);
+                || heroes().contains(pt);
     }
 
     @Override
@@ -128,7 +129,7 @@ public class Sample implements Field {
         return !(gold.contains(pt)
                 || bombs.contains(pt)
                 || walls.contains(pt)
-                || getHeroes().contains(pt));
+                || heroes().contains(pt));
     }
 
     @Override
@@ -148,11 +149,11 @@ public class Sample implements Field {
         bombs.remove(pt);
     }
 
-    public List<Gold> getGold() {
+    public List<Gold> gold() {
         return gold;
     }
 
-    public List<Hero> getHeroes() {
+    public List<Hero> heroes() {
         return players.stream()
                 .map(Player::getHero)
                 .filter(not(Objects::isNull))
@@ -177,11 +178,11 @@ public class Sample implements Field {
         return settings;
     }
 
-    public List<Wall> getWalls() {
+    public List<Wall> walls() {
         return walls;
     }
 
-    public List<Bomb> getBombs() {
+    public List<Bomb> bombs() {
         return bombs;
     }
 
@@ -197,11 +198,11 @@ public class Sample implements Field {
 
             @Override
             public Iterable<? extends Point> elements() {
-                return new LinkedList<Point>(){{
-                    addAll(Sample.this.getWalls());
-                    addAll(Sample.this.getHeroes());
-                    addAll(Sample.this.getGold());
-                    addAll(Sample.this.getBombs());
+                return new LinkedList<>(){{
+                    addAll(walls());
+                    addAll(heroes());
+                    addAll(gold());
+                    addAll(bombs());
                 }};
             }
         };
