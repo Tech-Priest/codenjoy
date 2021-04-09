@@ -564,6 +564,216 @@ class GameSpec extends Specification {
             '''
         game.event WIN
     }
+    
+    def "several heroes can appear on the map"() {
+        given:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☺$☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            '''
 
-    // TODO добавить мультиплеер тесты тут
+        when:
+        game++
+        
+        then:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☻$☼
+            ☼    ☼
+            ☼ ☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+
+        field'''
+            ☼☼☼☼☼☼
+            ☼☻ ☺$☼
+            ☼    ☼
+            ☼ ☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 1
+
+        field'''
+            ☼☼☼☼☼☼
+            ☼☻ ☻$☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 2
+    }
+
+    def "each hero can be controlled independently in one tick of the game"() {
+        given:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☺ ☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            '''
+
+        when:
+        game.hero 0, '*'
+        game.hero 0, '˅'
+        game.hero 1, '˅'
+        game.hero 2, '>'
+        game++
+
+        then:
+        field'''
+            ☼☼☼☼☼☼
+            ☼x   ☼
+            ☼☺ ☻ ☼
+            ☼  ☻ ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+    }
+
+    def "heroes can be removed from the game"() {
+        given:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☺ ☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            '''
+
+        when:
+        game.game(1).close()
+        game++
+
+        then:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺   ☼
+            ☼    ☼
+            ☼ ☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+    }
+
+    def "any of the heroes can explode on a bomb"() {
+        given:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☺ ☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            '''
+
+        game.hero 0, '*'
+        game.hero 0, '˅'
+        game.hero 1, '<'
+
+        game++
+
+        field'''
+            ☼☼☼☼☼☼
+            ☼x☻  ☼
+            ☼☺   ☼
+            ☼ ☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+
+        when:
+        game.hero 1, '<'
+        game++
+
+        then:
+        field'''
+            ☼☼☼☼☼☼
+            ☼X   ☼
+            ☼☺   ☼
+            ☼ ☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+
+        game.event 1, LOOSE
+        assert game.game(1).gameOver == true
+
+        game.dice 4, 1
+        game.game(1).newGame()
+        game++
+
+        field'''
+            ☼☼☼☼☼☼
+            ☼    ☼
+            ☼☺   ☼
+            ☼ ☻  ☼
+            ☼   ☻☼
+            ☼☼☼☼☼☼
+            ''', 0
+    }
+
+    def "any of the heroes can pick up gold"() {
+        given:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☺$☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            '''
+
+        when:
+        game.hero 1, '>'
+        game.dice 1, 2
+        game++
+
+        then:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺  ☻☼
+            ☼    ☼
+            ☼$☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+
+        game.event 1, WIN
+    }
+
+    def "heroes cannot walk through one another"() {
+        given:
+        field'''
+            ☼☼☼☼☼☼
+            ☼☺ ☺ ☼
+            ☼    ☼
+            ☼ ☺  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            '''
+
+        when:
+        game.hero 0, '>'
+        game.hero 1, '<'
+
+        game++
+
+        then:
+        field'''
+            ☼☼☼☼☼☼
+            ☼ ☺☻ ☼
+            ☼    ☼
+            ☼ ☻  ☼
+            ☼    ☼
+            ☼☼☼☼☼☼
+            ''', 0
+    }
 }
