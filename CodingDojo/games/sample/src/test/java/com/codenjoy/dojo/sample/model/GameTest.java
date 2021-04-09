@@ -31,15 +31,16 @@ import static org.mockito.Mockito.verify;
 
 public class GameTest extends GameTestRunner {
 
-    // есть карта со мной
     @Test
-    public void shouldFieldAtStart() {
+    public void heroOnTheField() {
+        // given
         givenFl("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ☺ ☼\n" +
@@ -47,12 +48,96 @@ public class GameTest extends GameTestRunner {
                 "☼☼☼☼☼\n");
     }
 
-    // я ходить
     @Test
-    public void shouldWalk() {
+    public void heroCanWalk_toTheLeft() {
+        // given
         givenFl("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).left();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼☺  ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCanWalk_toTheRight() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).right();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼  ☺☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCanWalk_toTheUp() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).up();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCanWalk_toTheDown() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).down();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void ifHeroDoesNotReceiveCommands_heDoesNotGoAnywhere() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼  ☺☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
@@ -61,150 +146,173 @@ public class GameTest extends GameTestRunner {
 
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
-                "☼☺  ☼\n" +
+                "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
+        // when
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCannotGoThroughTheBorder_toTheLeft() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺☼☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
         hero(0).right();
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺☼☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCannotGoThroughTheBorder_toTheRight() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼☼☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).left();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼☼☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCannotGoThroughTheBorder_toTheUp() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼ ☼ ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).up();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼ ☼ ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCannotGoThroughTheBorder_toTheDown() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼ ☼ ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).down();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼ ☼ ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCanLeaveTheBombUnderHim() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
-        hero(0).up();
+        // when
+        hero(0).act();
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
-                "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
         hero(0).down();
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
+                "☼ x ☼\n" +
                 "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-    // если небыло команды я никуда не иду
-    @Test
-    public void shouldStopWhenNoMoreRightCommand() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼  ☺☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        hero(0).left();
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    // я останавливаюсь возле границы
-    @Test
-    public void shouldStopWhenWallRight() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼  ☺☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        hero(0).right();
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼  ☺☼\n" +
-                "☼   ☼\n" +
                 "☼☼☼☼☼\n");
     }
 
     @Test
-    public void shouldStopWhenWallLeft() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼☺  ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        hero(0).left();
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼☺  ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    @Test
-    public void shouldStopWhenWallUp() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼ ☼ ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        hero(0).up();
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼ ☼ ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    @Test
-    public void shouldStopWhenWallDown() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼ ☼ ☼\n" +
-                "☼☼☼☼☼\n");
-
-        hero(0).down();
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼ ☼ ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    // я могу оставить бомбу
-    @Test
-    public void shouldMakeBomb() {
+    public void heroCanLeaveTheBombUnderHim_andAtTheSameMomentMoveToTheSide() {
+        // given
         givenFl("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
+        // when
         hero(0).act();
         hero(0).down();
         tick();
 
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ x ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void thereIsNoDifferenceInWhatOrderTheMovementAndTheActCommandAreExecuted() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).down(); // different order than in the previous test
+        hero(0).act();
+        tick();
+
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ x ☼\n" +
@@ -214,37 +322,50 @@ public class GameTest extends GameTestRunner {
 
     // на бомбе я взрываюсь
     @Test
-    public void shouldDieOnBomb() {
+    public void heroWillBlowUpOnABomb_IfHeWalksOnIt() {
+        // given
         givenFl("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ x ☼\n" +
                 "☼ ☺ ☼\n" +
                 "☼☼☼☼☼\n");
 
-        assertTrue(hero(0).isAlive());
+        assertEquals(true, hero(0).isAlive());
 
+        // when
         hero(0).up();
         tick();
-        event(0, Events.LOOSE);
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ X ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
-        assertFalse(hero(0).isAlive());
+        event(0, Events.LOOSE);
+        assertEquals(false, hero(0).isAlive());
     }
 
-    // я могу оставить бомб сколько хочу
     @Test
-    public void shouldMakeBombTwice() {
-        shouldMakeBomb();
+    public void heroOnTheFieldCanLeaveAsManyBombsAsHeWants() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ x ☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero(0).act();
+        hero(0).down();
+        tick();
 
         hero(0).act();
         hero(0).right();
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ x ☼\n" +
@@ -252,79 +373,16 @@ public class GameTest extends GameTestRunner {
                 "☼☼☼☼☼\n");
     }
 
-    // я могу собирать золото и получать очки
-    // новое золото появится в рендомном месте
     @Test
-    public void shouldGetGold() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺$☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        dice(1, 3);
-        hero(0).right();
-        tick();
-        event(0, Events.WIN);
-
-        assertE("☼☼☼☼☼\n" +
-                "☼$  ☼\n" +
-                "☼  ☺☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    // выполнения команд left + act не зависят от порядка - если они сделаны в одном тике, то будет дырка слева без перемещения
-    @Test
-    public void shouldMakeBomb2() {
+    public void heroCannotLeaveTwoBombsInOneCell() {
+        // given
         givenFl("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ ☺ ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
-        hero(0).down();
-        hero(0).act();
-//        hero(0).down();
-        tick();
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ x ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    // проверить, что если новому обекту не где появится то программа не зависает - там бесконечный цикл потенциальный есть
-    @Test(timeout = 1000)
-    public void shouldNoDeadLoopWhenNewObjectCreation() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺$☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
-        dice(2, 2);
-        hero(0).right();
-        tick();
-        event(0, Events.WIN);
-
-        assertE("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ $☺☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-    }
-
-    // я не могу ставить две бомбы на одной клетке
-    @Test
-    public void shouldMakeOnlyOneBomb() {
-        givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
-                "☼☼☼☼☼\n");
-
+        // when
         hero(0).act();
         tick();
 
@@ -332,29 +390,82 @@ public class GameTest extends GameTestRunner {
         hero(0).down();
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ x ☼\n" +
                 "☼ ☺ ☼\n" +
                 "☼☼☼☼☼\n");
 
+        // when
         dice(1, 2);
         hero(0).up();
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼ X ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
 
+        // when
         newGame(0);
         tick();
 
+        // then
         assertE("☼☼☼☼☼\n" +
                 "☼   ☼\n" +
                 "☼☺  ☼\n" +
                 "☼   ☼\n" +
                 "☼☼☼☼☼\n");
+    }
+
+    @Test
+    public void heroCanPickUpGoldOnTheMap_afterWhichItWillAppearInANewPlace() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺$☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        dice(1, 3);
+        hero(0).right();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼$  ☼\n" +
+                "☼  ☺☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        event(0, Events.WIN);
+    }
+
+    @Test(timeout = 1000)
+    public void ifThereIsNoPlaceForGold_thenTheProgramDoesNotFreeze() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼ ☺$☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        dice(0, 0); // there is no space in this cell because of board
+        hero(0).right();
+        tick();
+
+        // then
+        assertE("☼☼☼☼☼\n" +
+                "☼   ☼\n" +
+                "☼  ☺☼\n" +
+                "☼   ☼\n" +
+                "☼☼☼☼☼\n");
+
+        event(0, Events.WIN);
     }
 }
