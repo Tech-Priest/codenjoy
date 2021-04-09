@@ -16,6 +16,7 @@
         <module.name>sample</module.name>
 
         <spock.version>2.0-M5-groovy-3.0</spock.version>
+        <junit-vintage-engine.version>5.7.0</junit-vintage-engine.version>
     </properties>
 
     <repositories>
@@ -59,33 +60,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spock without junit5 -->
-
-        <dependency> <!-- TODO disable/enable me for spock/junit4 -->
-            <groupId>org.opentest4j</groupId>
-            <artifactId>opentest4j</artifactId>
-            <version>1.2.0</version>
-            <scope>test</scope>
+        <!-- Spock -->
+        <!-- TODO move it to games.pom -->
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit-vintage-engine.version}</version>
         </dependency>
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-junit4</artifactId>
             <version>${spock.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit</groupId>
-                    <artifactId>junit-bom</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-                <exclusion> <!-- TODO disable/enable me for spock/junit4 -->
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>junit-platform-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
