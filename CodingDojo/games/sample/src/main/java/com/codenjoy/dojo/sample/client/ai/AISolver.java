@@ -44,6 +44,8 @@ import static com.codenjoy.dojo.sample.model.Elements.GOLD;
  */
 public class AISolver implements Solver<Board> {
 
+    private static final int ACT_EVERY = 10;
+
     private DeikstraFindWay way;
     private Dice dice;
 
@@ -52,14 +54,14 @@ public class AISolver implements Solver<Board> {
         this.way = new DeikstraFindWay();
     }
 
-    public DeikstraFindWay.Possible possible(Board board) {
+    public DeikstraFindWay.Possible possible(Board board, boolean ignoreBombs) {
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point pt) {
                 int x = pt.getX();
                 int y = pt.getY();
                 if (board.isBarrierAt(x, y)) return false;
-                if (board.isBombAt(x, y)) return false;
+                if (!ignoreBombs && board.isBombAt(x, y)) return false;
                 return true;
             }
         };
@@ -69,8 +71,16 @@ public class AISolver implements Solver<Board> {
     public String get(Board board) {
         if (board.isGameOver()) return "";
         List<Direction> result = getDirections(board);
-        if (result.isEmpty()) return "";
-        return result.get(0).ACT(true);
+        if (result.isEmpty()) {
+            return Direction.random(dice).toString();
+        }
+        Direction direction = result.get(0);
+        // бомбу ставим каждый ACT_EVERY ход
+        if (dice.next(ACT_EVERY) % ACT_EVERY == 0) {
+            return direction.ACT(true);
+        } else {
+            return direction.toString();
+        }
     }
 
     public List<Direction> getDirections(Board board) {
@@ -81,7 +91,11 @@ public class AISolver implements Solver<Board> {
         if (to.isEmpty()) {
             return Arrays.asList();
         }
-        DeikstraFindWay.Possible map = possible(board);
-        return way.getShortestWay(size, from, to, map);
+        List<Direction> result = way.getShortestWay(size, from, to, possible(board, false));
+        if (result.isEmpty()) {
+            // если к золоту не можем построить маршрут мимо бомб, идем напролом
+            result = way.getShortestWay(size, from, to, possible(board, true));
+        }
+        return result;
     }
 }

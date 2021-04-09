@@ -44,7 +44,7 @@ public class SmokeTest {
 
     @Test
     public void test() {
-        Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
+        Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 1000, 1000);
 
         // about 2.2 sec
         int players = 2;
