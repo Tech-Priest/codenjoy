@@ -564,4 +564,6 @@ class GameSpec extends Specification {
             '''
         game.event WIN
     }
+
+    // TODO добавить мультиплеер тесты тут
 }

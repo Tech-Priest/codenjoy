@@ -10,12 +10,12 @@ package com.codenjoy.dojo.sample.model;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -30,24 +30,16 @@ import static org.junit.Assert.assertTrue;
 
 public class MultiplayerTest extends GameTestRunner {
 
-    public void givenThreePlayers() {
-        givenPlayer(1, 4);
-        givenPlayer(2, 2);
-        givenPlayer(3, 4);
-    }
-
-    // рисуем несколько игроков
+    // several heroes can appear on the map
     @Test
-    public void shouldPrint() {
+    public void severalHeroesCanAppearOnTheMap() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
-                "☼   $☼\n" +
+                "☼☺ ☺$☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
-
-        givenThreePlayers();
 
         // when then
         assertE("☼☼☼☼☼☼\n" +
@@ -58,38 +50,36 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼☼☼☼☼☼\n", 0);
 
         assertE("☼☼☼☼☼☼\n" +
-                "☼☻ ☻$☼\n" +
-                "☼    ☼\n" +
-                "☼ ☺  ☼\n" +
-                "☼    ☼\n" +
-                "☼☼☼☼☼☼\n", 1);
-
-        assertE("☼☼☼☼☼☼\n" +
                 "☼☻ ☺$☼\n" +
                 "☼    ☼\n" +
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertE("☼☼☼☼☼☼\n" +
+                "☼☻ ☻$☼\n" +
+                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 2);
     }
 
-    // Каждый игрок может упраыляться за тик игры независимо
+    // each hero can be controlled independently in one tick of the game
     @Test
-    public void shouldJoystick() {
+    public void eachHeroCanBeControlledIndependentlyInOneTickOfTheGame() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
+                "☼☺ ☺ ☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
-
-        givenThreePlayers();
 
         // when
         game(0).getJoystick().act();
         game(0).getJoystick().down();
-        game(1).getJoystick().right();
-        game(2).getJoystick().down();
+        game(1).getJoystick().down();
+        game(2).getJoystick().right();
 
         tick();
 
@@ -102,21 +92,19 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼☼☼☼☼☼\n", 0);
     }
 
-    // игроков можно удалять из игры
+    // heroes can be removed from the game
     @Test
-    public void shouldRemove() {
+    public void heroesCanBeRemovedFromTheGame() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
+                "☼☺ ☺ ☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
 
-        givenThreePlayers();
-
         // when
-        game(2).close();
+        game(1).close();
 
         tick();
 
@@ -129,22 +117,20 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼☼☼☼☼☼\n", 0);
     }
 
-    // игрок может взорваться на бомбе
+    // any of the heroes can explode on a bomb
     @Test
-    public void shouldKill() {
+    public void anyOfTheHeroesCanExplodeOnABomb() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
+                "☼☺ ☺ ☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
 
-        givenThreePlayers();
-
         game(0).getJoystick().down();
         game(0).getJoystick().act();
-        game(2).getJoystick().left();
+        game(1).getJoystick().left();
 
         tick();
 
@@ -154,9 +140,9 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
-        
+
         // when
-        game(2).getJoystick().left();
+        game(1).getJoystick().left();
         tick();
 
         // then
@@ -167,11 +153,11 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
-        event(2, Events.LOOSE);
-        assertTrue(game(2).isGameOver());
+        event(1, Events.LOOSE);
+        assertTrue(game(1).isGameOver());
 
         dice(4, 1);
-        game(2).newGame();
+        game(1).newGame();
 
         tick();
 
@@ -183,21 +169,19 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼☼☼☼☼☼\n", 0);
     }
 
-    // игрок может подобрать золото
+    // any of the heroes can pick up gold
     @Test
-    public void shouldGetGold() {
+    public void anyOfTheHeroesCanPickUpGold() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
-                "☼   $☼\n" +
+                "☼☺ ☺$☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
 
-        givenThreePlayers();
-
         // when
-        game(2).getJoystick().right();
+        game(1).getJoystick().right();
 
         dice(1, 2);
 
@@ -211,25 +195,23 @@ public class MultiplayerTest extends GameTestRunner {
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
-        event(2, Events.WIN);
+        event(1, Events.WIN);
     }
 
-    // игрок не может пойи на другого игрока
+    // heroes cannot walk through one another
     @Test
-    public void shouldCantGoOnHero() {
+    public void heroesCannotWalkThroughOneAnother() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
+                "☼☺ ☺ ☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
 
-        givenThreePlayers();
-
         // when
         game(0).getJoystick().right();
-        game(2).getJoystick().left();
+        game(1).getJoystick().left();
 
         tick();
 
